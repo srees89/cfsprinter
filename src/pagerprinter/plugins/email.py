@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """
 Email plugin
-Copyright 2013 Shane Rees <https://github.com/Shaggs/>
+Copyright 2015 Shane Rees <https://github.com/Shaggs/>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -24,7 +24,6 @@ from email.mime.text import MIMEText
 
 class EmailPlugin(BasePlugin):
 	def configure(self, c):
-		# read in phone numbers we need
 		self.recipient = [
 			x.strip()
 			for x

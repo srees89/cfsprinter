@@ -1,6 +1,6 @@
 """
 pyttsx (text to speech)
-Copyright 2014 Shane Rees <https://github.com/Shaggs/>
+Copyright 2014 - 2015 Shane Rees <https://github.com/Shaggs/>
 
 This plug-in is designed to read out a copy of the received turnout
 Page for those that maybe in the station or form those coming in
