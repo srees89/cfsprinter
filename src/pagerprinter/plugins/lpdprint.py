@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """
 LPD/CUPS text printing plugin for pagerprinter.
-Copyright 2011 - 2015 Michael Farrell <http://micolous.id.au/>
+Copyright 2011 Michael Farrell <http://micolous.id.au/>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -18,7 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 from __future__ import absolute_import
 from . import BasePlugin
-from subprocess import Popen, PIPE
+import subprocess
 from configparser import NoOptionError
 
 
@@ -51,7 +51,7 @@ lpr command.
 			pargs += ['-o', 'lpi=%d' % self.lpi]
 
 		for x in range(print_copies):
-			lpr = Popen(pargs, stdin=PIPE)
+			lpr = subprocess.Popen(pargs, stdin=subprocess.PIPE)
 
 			lpr.stdin.write("""\
 Got a page!
