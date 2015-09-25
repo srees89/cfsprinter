@@ -31,29 +31,53 @@ from . import BasePlugin
 import pyttsx
 import re
 import time
+import threading
+import os.path
+import pygame
+import string
+from abbreviations import abbreviations
+
+pygame.mixer.init()
+pygame.init()
 engine = pyttsx.init()
 rate = engine.getProperty('rate')
-engine.setProperty('rate', 100)
+engine.setProperty('rate', 120)
 volume = engine.getProperty('volume')
-engine.setProperty('volume', 100)
+engine.setProperty('volume', 150)
+o = os.path.join('pagerprinter', 'sounds', 'alert.wav')
+s = pygame.mixer.Sound(o)
 
 
 class TTS(BasePlugin):
-	def execute(self, msg, unit, address, when, printer, print_copies):
-		res = str('%s - %s' % (msg, unit))
-		rem = re.compile('.*(RESPOND.*?ALARM\sLEVEL:\s\d)')
-		resp = rem.match(res)
-		more = str('%s - %s' % (msg, unit))
-		inf = re.compile('.*==(.*?\s:)')
-		info = inf.match(more)
-
+	def say(self, resp, info, address, appliance):
 		if resp:
 			for group in resp.groups():
 				if info:
 					for group2 in info.groups():
-						for x in range(3):
-							engine.say(group)
-							engine.say(group2)
-							engine.runAndWait()
-							time.sleep(180)
+						if appliance:
+							for group3 in appliance.groups():
+								for x in range(3):
+									s.play()
+									time.sleep(6)
+									engine.say(group)
+									engine.say(group2)
+									engine.say(address)
+									engine.say(group3)
+									engine.runAndWait()
+									time.sleep(20)
+
+	def execute(self, msg, unit, address, when, printer, print_copies):
+		pattern = re.compile(r'\b(' + '|'.join(abbreviations.keys()) + r')\b')
+		msg = pattern.sub(lambda x: [x.group()], msg)
+		res = str('%s - %s' % (msg, unit))
+		rem = re.compile('.*(RESPOND.*?ALARM\sLEVEL:\s\d)')
+		resp = rem.match(res)
+		more = str('%s - %s - %s' % (address, msg, unit))
+		inf = re.compile('.*==(.*?\s:)')
+		info = inf.match(more)
+		app = re.compile('.*:(.*?\s:\s-)')
+		appliance = app.match(more)
+		address = re.sub(r'#\d{3}/\d{3}|@|\s:\s', '', address)
+		my_thread = threading.Thread(target=self.say, args=(resp, info, address, appliance))
+		my_thread.start()
 PLUGIN = TTS
