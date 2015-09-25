@@ -19,8 +19,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 from __future__ import absolute_import
 
 from .scrapers import get_scraper
-from .browsersupport import get_browser
-from .mappingsupport import get_map
 from .plugins import get_plugin
 # configparser3
 from configparser import SafeConfigParser, NoOptionError
@@ -39,12 +37,9 @@ Copyright 2010 - 2015 Michael Farrell <http://micolous.id.au/>
 		'pagerprinter': {
 			'update-freq': '30',
 			'backend': 'sacfs',
-			'browser': 'firefox',
-			'browser-exec': 'firefox',
 			'browser-wait': '20',
 			'trigger': 'RESPOND',
 			'trigger-end': 'MAP',
-			'mapper': 'google',
 			'print-copies': '1',
 			'unit': 'all',
 			'home': '141 King William Street, Adelaide SA 5000',
@@ -60,15 +55,6 @@ Copyright 2010 - 2015 Michael Farrell <http://micolous.id.au/>
 	)(
 		c.getint('pagerprinter', 'update-freq')
 	)
-
-	# get a browser helper instance
-	browser = get_browser(
-		c.get('pagerprinter', 'browser')
-	)(
-		c.get('pagerprinter', 'browser-exec'),
-		c.getint('pagerprinter', 'browser-wait')
-	)
-
 	trigger = c.get('pagerprinter', 'trigger').lower().strip()
 	trigger_end = c.get('pagerprinter', 'trigger-end').lower().strip()
 	my_unit = c.get('pagerprinter', 'unit').lower().strip()
@@ -81,7 +67,6 @@ Copyright 2010 - 2015 Michael Farrell <http://micolous.id.au/>
 	if print_copies < 1:
 		print "ERROR: print-copies is set to less than one.  You probably don't want this."
 		return
-	mapper = c.get('pagerprinter', 'mapper')
 
 	plugins = []
 	if c.has_option('pagerprinter', 'plugins'):
@@ -94,15 +79,10 @@ Copyright 2010 - 2015 Michael Farrell <http://micolous.id.au/>
 		for plugin in plugins:
 			plugin.configure(c)
 
-	mapper = get_map(mapper)
-
 	# special case: all units.
 	# may result in dupe printouts
 	if my_unit == 'all':
 		my_unit = ''
-
-	# home
-	home = c.get('pagerprinter', 'home')
 
 	# now, lets setup a handler for these events.
 	def page_handler(good_parse, msg, date=None, unit=None):
@@ -138,15 +118,7 @@ Copyright 2010 - 2015 Michael Farrell <http://micolous.id.au/>
 						# reassemble the address
 						addr = ','.join(addr_p)
 						del addr_p
-
-						# we have an address.  feed it to the mapping engine
-						url = mapper.get_url(home, addr)
-
 						print "- Address: %s" % addr
-						print "- URL for directions: %s" % url
-
-						# sending to browser
-						browser.print_url(url, printer, print_copies)
 
 						# now, send to plugins
 						for plugin in plugins:
