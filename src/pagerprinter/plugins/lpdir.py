@@ -22,6 +22,7 @@ import subprocess
 from configparser import NoOptionError
 import json, urllib, re
 from urllib import urlencode
+from tempfile import mktemp
 
 
 class lpdir(BasePlugin):
@@ -43,12 +44,15 @@ class lpdir(BasePlugin):
 			))
 			ur = urllib.urlopen(url)
 			result = json.load(ur)
-			for i in range(0, len(result['routes'][0]['legs'][0]['steps'])):
-				s = (result['routes'][0]['legs'][0]['steps'][i]['html_instructions'])
-				d = (result['routes'][0]['legs'][0]['steps'][i]['distance']['text'])
-				l = (result['routes'][0]['legs'][0]['steps'][i]['duration']['text'])
-				s = re.sub('<[A-Za-z\/][^>]*>', '', s)
-			pargs = ['lpr', '-#', str(print_copies)]
+			filename = 'directions.txt'
+			with open(filename, 'w') as output:
+				for i in range(0, len(result['routes'][0]['legs'][0]['steps'])):
+					s = (result['routes'][0]['legs'][0]['steps'][i]['html_instructions'])
+					d = (result['routes'][0]['legs'][0]['steps'][i]['distance']['text'])
+					l = (result['routes'][0]['legs'][0]['steps'][i]['duration']['text'])
+					s = re.sub('<[A-Za-z\/][^>]*>', '', s)
+					output.writelines(s + " " + d + " " + l + '\n')
+			pargs = ['lpr', '-#', str(print_copies), 'directions.txt']
 
 			if printer is not None:
 				pargs += ['-P', printer]
@@ -60,11 +64,6 @@ class lpdir(BasePlugin):
 				pargs += ['-o', 'lpi=%d' % self.lpi]
 
 			for x in range(print_copies):
-				lpr = subprocess.Popen(pargs, stdin=subprocess.PIPE)
-
-				lpr.stdin.writes(s + " " + d + " " + l + '\n')
-
-				lpr.stdin.flush()
-				lpr.stdin.close()
+				lpr = subprocess.Popen(pargs)
 
 PLUGIN = lpdir
