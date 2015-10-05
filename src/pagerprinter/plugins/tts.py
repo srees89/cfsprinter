@@ -1,6 +1,6 @@
 """
 pyttsx (text to speech)
-Copyright 2014 - 2015 Shane Rees <https://github.com/Shaggs/>
+Copyright 2014 Shane Rees <https://github.com/Shaggs/>
 
 This plug-in is designed to read out a copy of the received turnout
 Page for those that maybe in the station or form those coming in
@@ -35,7 +35,7 @@ import threading
 import os.path
 import pygame
 import string
-from abbreviations import abbreviations
+from pagerprinter.misc.abbreviations import abbreviations
 
 pygame.mixer.init()
 pygame.init()
@@ -68,7 +68,7 @@ class TTS(BasePlugin):
 
 	def execute(self, msg, unit, address, when, printer, print_copies):
 		pattern = re.compile(r'\b(' + '|'.join(abbreviations.keys()) + r')\b')
-		msg = pattern.sub(lambda x: [x.group()], msg)
+		msg = pattern.sub(lambda x: abbreviations[x.group()], msg)
 		res = str('%s - %s' % (msg, unit))
 		rem = re.compile('.*(RESPOND.*?ALARM\sLEVEL:\s\d)')
 		resp = rem.match(res)

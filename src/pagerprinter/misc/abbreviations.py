@@ -1,5 +1,7 @@
 abbreviations = {
 # appliances
+	#MFS
+	
 	'BPK451': 'Brookleyn Park Four Five One',
 	'OAK302': 'Oakden three zero two',
 	'ADL203': 'Adelaide, Two Zero Three',
@@ -29,7 +31,15 @@ abbreviations = {
 	'GAW359': 'GAWLER THREE FIVE NINE',
 	'GGV311': 'GOLDEN GROVE THREE ONE ONE',
 	'GLO441': 'GLEN OSMOND FOUR FOUR ONE',
-#operational	
+	#CFS
+	
+	'BRDG14': 'Bridgewater One Four',
+	'BRDG24P': 'Bridgewater Two Four P',
+	'BRGD34': 'Bridgewater Three Four',
+	'BRDGC1': 'Bridgewater Car One',
+	'MRPHPUMP': 'Morphett Vale Pumper',
+#operational
+	
 	'COQ': 'Change Of Quarters',
 	'FIP': 'Fire Indcator Pannel',
 	'DESC': 'Descrpition',

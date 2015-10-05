@@ -22,12 +22,16 @@ setup(
 	author='Michael Farrell',
 	url='http://github.com/micolous/cfsprinter',
 	options=dict(py2exe=dict(includes=[
-		'plugins.winprint',
-		'plugins.lpdprint',
-		'plugins.skypesms',
-		'plugins.logfile',
-		'plugins.huaweisms',
-		'plugins.email',
+		'pagerprinter.plugins.winprint',
+		'pagerprinter.plugins.lpdprint',
+		'pagerprinter.plugins.skypesms',
+		'pagerprinter.plugins.logfile',
+		'pagerprinter.plugins.huaweisms',
+		'pagerprinter.plugins.email',
+		'pagerprinter.plugins.__init__',
+		'pagerprinter.plugins.display',
+		'pagerprinter.plugins.tts',
+		'pagerprinter.plugins.directions',
 	])),
 
 	requires=requires,
@@ -44,6 +48,7 @@ setup(
 
 	package_dir={'pagerprinter': 'src/pagerprinter'},
 	packages=[
+		'src',
 		'pagerprinter',
 		'pagerprinter.misc',
 		'pagerprinter.plugins',
