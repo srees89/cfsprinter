@@ -18,7 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
 from __future__ import absolute_import
-from ..scrapers.sacfs_flexcode import CODES
+from .scrapers.sacfs_flexcode import CODES
 from argparse import ArgumentParser
 import sqlite3
 
