@@ -1,7 +1,6 @@
 abbreviations = {
-# appliances
-	#MFS
-	
+	# Appliances
+	# MFS
 	'BPK451': 'Brookleyn Park Four Five One',
 	'OAK302': 'Oakden three zero two',
 	'ADL203': 'Adelaide, Two Zero Three',
@@ -31,7 +30,7 @@ abbreviations = {
 	'GAW359': 'GAWLER THREE FIVE NINE',
 	'GGV311': 'GOLDEN GROVE THREE ONE ONE',
 	'GLO441': 'GLEN OSMOND FOUR FOUR ONE',
-#CFS Station and Group Names
+	# CFS Station and Group Names
 	'SKLK': 'South Kilkerran',
 	'BROK': 'Brooker',
 	'ENCO': 'Encounter Bay',
@@ -738,21 +737,12 @@ abbreviations = {
 	'SMTH': 'Smithfield',
 	'TCKY': 'Tuckey',
 	'AMTA': 'Amata',
-	
-# CFS UNIT
-<<<<<<< HEAD
+	# CFS UNIT
 	'RESC': 'RESCUE',
 	'BW12': 'BULK WATER CARRIER',
 	'BW15': 'BULK WATER CARRIER',
 	'BW13': 'BULK WATER CARRIER',
 	'BW7': 'BULK WATER CARRIER',
-=======
-	'RESC': 'RESCUE'
-	'HAZ': 'HAZMAT'
-	'BW12': 'BULK WATER CARRIER'
-	'BW15': 'BULK WATER CARRIER'
-	'BW13': 'BULK WATER CARRIER'
->>>>>>> af4170aaabdf9178e4f554d43251761d5b1b09fa
 	'NRRD24P H': 'NARRIDY TWO FOUR P H',
 	'KNGG34P': 'KONGORONG THREE FOUR P',
 	'LYND34P': 'LYNDOCH THREE FOUR P',
@@ -5131,8 +5121,7 @@ abbreviations = {
 	'KAPD24P H': 'KAPUNDA TWO FOUR P H',
 	'WCHSPUMP': 'WOODCHESTER PUMPER',
 	'BRDGC1': 'Bridgewater Car One',
-#operational
-	
+	# Operational
 	'COQ': 'Change Of Quarters',
 	'FIP': 'Fire Indcator Pannel',
 	'DESC': 'Descrpition',
@@ -5149,8 +5138,7 @@ abbreviations = {
 	'NW': 'North West',
 	'SPKL': 'Sprinker',
 	'VLV': 'Valve',
-#Road Use	
-
+	# Road Use
 	'ALWY': 'ALLEYWAY',
 	'ARC': 'ARCADE',
 	'AV': 'AVENUE',
@@ -5305,7 +5293,7 @@ abbreviations = {
 	'WALK': 'WALK',
 	'WAY': 'WAY',
 	'WHRF': 'WHARF',
-	'WKWY':	'WALKWAY',
+	'WKWY': 'WALKWAY',
 	'WYND': 'WYND',
-	'YARD':	'YARD',
-	}
+	'YARD': 'YARD',
+}
