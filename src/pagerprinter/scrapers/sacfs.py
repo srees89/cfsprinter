@@ -26,7 +26,8 @@ from urllib2 import urlopen
 from urllib import urlencode
 from xml.sax.saxutils import unescape
 from ..support import strip_tags
-
+import logging
+import datetime
 try:
 	# python >=2.6
 	import json
@@ -112,9 +113,16 @@ Like update, except the feed is updated continuously forever.  Errors are handle
 			try:
 				self.update(feed_handler)
 			except Exception as ex:
+				f = open("syslog.log", "a")
+				j = datetime.datetime.strftime(datetime.datetime.now(), '%H:%M:%S')
+				m = str(j)
+				f.write('\n' + m)
+				f.write("Failure updating feed.  Error was: ")
+				v = str(ex)
+				f.write(v) 
+				f.close()
 				print "Failure updating feed.  Error was:"
 				print ex
-			print "napping..."
 			sleep(self.update_frequency)
 
 
@@ -201,9 +209,16 @@ Like update, except the feed is updated continuously forever.  Errors are handle
 			try:
 				self.update(feed_handler)
 			except Exception as ex:
+				f = open("syslog.txt", "a")
+				j = datetime.datetime.strftime(datetime.datetime.now(), '%H:%M:%S')
+				m = str(j)
+				f.write('\n' + m)
+				f.write("Failure updating feed.  Error was: ")
+				v = str(ex)
+				f.write(v) 
+				f.close()
 				print "Failure updating feed.  Error was:"
 				print ex
-			print "napping..."
 			sleep(self.update_frequency)
 
 
