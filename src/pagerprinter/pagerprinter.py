@@ -29,7 +29,7 @@ import re
 def run(fh=None):
 	print """\
 pagerprinter v0.1.3+
-Copyright 2010 - 2015 Michael Farrell <http://micolous.id.au/>
+Copyright 2010 - 2016 Michael Farrell <http://micolous.id.au/> Shane Rees <https://github.com/>
 """
 	# parse config
 	c = SafeConfigParser()
@@ -87,7 +87,7 @@ Copyright 2010 - 2015 Michael Farrell <http://micolous.id.au/>
 	# now, lets setup a handler for these events.
 	def page_handler(good_parse, msg, date=None, unit=None):
 		if good_parse:
-			print "Good parse! %s - %s" % (repr(msg), unit)
+				print "%s " % (repr(msg))
 			# filter for unit
 			if my_unit in unit.lower():
 				# this is for me!!!
@@ -127,18 +127,28 @@ Copyright 2010 - 2015 Michael Farrell <http://micolous.id.au/>
 							except Exception, e:
 								print "Exception caught in plugin %s" % type(plugin)
 								print e
+								f = open("syslog.log", "a")
+								j = datetime.datetime.strftime(datetime.datetime.now(), '%H:%M:%S')
+								m = str(j)
+								f.write('\n' + m)
+								f.write(" Exception caught in plugin %s" % type(plugin))
+								v = str(e)
+								f.write(v)
+								f.close()
+								
+						print "**** Back to Motoring***"		
 					else:
-						print "- WARNING: End trigger not found!  Skipping..."
+						print "- WARNING: End trigger not found! You wont receive any output because of this"
 				else:
 					print "- Trigger not found.  Skipping..."
-			else:
-				print "- This isn't for my unit.  Skipping..."
 		else:
 			print "ERROR: THIS IS A BUG!!!"
 			print "Couldn't handle the following message, please file a bug report."
 			print repr(msg)
-
-	print "updating forever"
+	f = open("syslog.txt", "a")
+	f.write("\n %s Program Started % (time.strftime("%H:%M:%S")))
+	f.close()
+	print "%s ***Starting***" % (time.strftime("%H:%M:%S"))
 	scraper.update_forever(page_handler)
 
 
