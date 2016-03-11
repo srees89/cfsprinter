@@ -24,7 +24,7 @@ from .plugins import get_plugin
 from configparser import SafeConfigParser, NoOptionError
 from argparse import ArgumentParser, FileType
 import re
-
+import time
 
 def run(fh=None):
 	print """\
@@ -87,11 +87,11 @@ Copyright 2010 - 2016 Michael Farrell <http://micolous.id.au/> Shane Rees <https
 	# now, lets setup a handler for these events.
 	def page_handler(good_parse, msg, date=None, unit=None):
 		if good_parse:
-				print "%s " % (repr(msg))
 			# filter for unit
 			if my_unit in unit.lower():
 				# this is for me!!!
 				print "- This is a message for my unit!"
+				print "%s " % (repr(msg))
 				# check for trigger
 				lmsg = msg.lower()
 				if trigger in lmsg:
