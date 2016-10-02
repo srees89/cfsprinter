@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """
 Program to automatically print out CFS pager feeds.
-Copyright 2010 - 2015 Michael Farrell <http://micolous.id.au/>
+Copyright 2010 - 2016 Michael Farrell <http://micolous.id.au/>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -20,16 +20,17 @@ from __future__ import absolute_import
 
 from .scrapers import get_scraper
 from .plugins import get_plugin
-# configparser3
 from configparser import SafeConfigParser, NoOptionError
 from argparse import ArgumentParser, FileType
 import re
 import time
+import datetime
+from clint.textui import puts, colored
 
 def run(fh=None):
-	print """\
-pagerprinter v0.1.3+
-Copyright 2010 - 2016 Michael Farrell <http://micolous.id.au/> Shane Rees <https://github.com/>
+	print """
+pagerprinter v0.1.5+
+Copyright 2010 - 2016 Michael Farrell <http://micolous.id.au/> Shane Rees <https://github.com/Shaggs>
 """
 	# parse config
 	c = SafeConfigParser()
@@ -93,6 +94,12 @@ Copyright 2010 - 2016 Michael Farrell <http://micolous.id.au/> Shane Rees <https
 				print "- This is a message for my unit!"
 				print "%s " % (repr(msg))
 				# check for trigger
+				if "P1" in msg:
+					lmsg = msg.replace(" P1 ", ", ALARM LEVEL: 1, ")
+				elif "P2" in msg:
+					lmsg = msg.replace(" P2 ", ", ALARM LEVEL: 1, ")
+				elif "P3" in msg:
+					lmsg = msg.replace(" P3 ", ", ALARM LEVEL: 1, ")
 				lmsg = msg.lower()
 				if trigger in lmsg:
 					# trigger found
@@ -125,8 +132,8 @@ Copyright 2010 - 2016 Michael Farrell <http://micolous.id.au/> Shane Rees <https
 							try:
 								plugin.execute(msg, unit, addr, date, printer, print_copies)
 							except Exception, e:
-								print "Exception caught in plugin %s" % type(plugin)
-								print e
+								puts(colored.red("Exception caught in plugin %s" % type(plugin)))
+								puts(colored.red(str(e)))
 								f = open("syslog.log", "a")
 								j = datetime.datetime.strftime(datetime.datetime.now(), '%H:%M:%S')
 								m = str(j)
@@ -136,19 +143,19 @@ Copyright 2010 - 2016 Michael Farrell <http://micolous.id.au/> Shane Rees <https
 								f.write(v)
 								f.close()
 								
-						print "**** Back to Motoring***"		
+						puts(colored.green("**** Back to Motoring***"))		
 					else:
-						print "- WARNING: End trigger not found! You wont receive any output because of this"
+						puts(colored.red("- WARNING: End trigger not found! You wont receive any output because of this"))
 				else:
-					print "- Trigger not found.  Skipping..."
+					puts(colored.cyan("- Trigger not found.  Skipping..."))
 		else:
 			print "ERROR: THIS IS A BUG!!!"
 			print "Couldn't handle the following message, please file a bug report."
 			print repr(msg)
 	f = open("syslog.txt", "a")
-	f.write("\n %s Program Started % (time.strftime("%H:%M:%S")))
+	#f.write("\n %s Program Started % (time.strftime("%H:%M:%S")))
 	f.close()
-	print "%s ***Starting***" % (time.strftime("%H:%M:%S"))
+	puts(colored.green("%s ***Starting***" % (time.strftime("%H:%M:%S"))))
 	scraper.update_forever(page_handler)
 
 
