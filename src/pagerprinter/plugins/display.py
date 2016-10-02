@@ -27,7 +27,15 @@ import re
 
 
 class Display(BasePlugin):
+	def configure(self, c):
+		self.size = c.get('display', 'font-size')
 	def execute(self, msg, unit, address, when, printer, print_copies):
+		if "P1" in msg:
+			msg = msg.replace(" P1 ", ", ALARM LEVEL: 1, ")
+		elif "P2" in msg:
+			msg = msg.replace(" P2 ", ", ALARM LEVEL: 1, ")
+		elif "P3" in msg:
+			msg = msg.replace(" P3 ", ", ALARM LEVEL: 1, ")
 		trigger = 'RESPOND'
 		trigger_end = 'MAP'
 		addr = msg.split(trigger)[1]
@@ -38,7 +46,10 @@ class Display(BasePlugin):
 		alarm = addr.split(',')[1]
 		map = addr.split(',')[3]
 		map = re.sub(r'MAP:', '', map)
-		tg = addr.split(',')[4]
+		if 'P1' or 'P2' or 'P3' in msg:
+			tg = "null"
+		else:
+			tg = addr.split(',')[4]
 		if "== ==" in addr:
 		 ex = addr.split("== ==")[1]
 		else:
@@ -46,8 +57,11 @@ class Display(BasePlugin):
 		ex = ex.split(':')[0]
 		sunit = msg.split (':')[6]
 		ex = ex.replace('==' or "== ==", '')
-		tg = re.sub(r'TG', '', tg)
-		tg = tg.strip("  ")
+		if tg == 'null':
+			tg = ' '
+		else:
+			tg = re.sub(r'TG', '', tg)
+			tg = tg.strip("  ")
 		addr = addr.split(trigger_end)[0]
 		addr = re.sub(r'#\d{3}/\d{3}|@|\s:\s', '', addr)
 		addr_p = addr.split(',')[-2:]
@@ -62,10 +76,10 @@ class Display(BasePlugin):
 
 		def kill():
 			root.destroy()
-
+		size = str('times ' + self.size + ' bold')
 		mseg = str('%s - %s' % (msg, unit))
 		root = Tk()
-		text_widget = Text(root, font='times 40 bold', bg='Green')
+		text_widget = Text(root, font=size, bg='Green')
 		text_widget.pack(fill=BOTH, expand=0)
 		text_widget.tag_configure('tag-center', wrap='word', justify='center')
 		text_widget.insert(INSERT,''' Date: %(date)s
