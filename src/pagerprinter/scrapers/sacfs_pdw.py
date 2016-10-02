@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """
 Scraper for PDW / SACFS
-Copyright 2010 - 2015 Michael Farrell <http://micolous.id.au/>
+Copyright 2010 - 2016 Michael Farrell <http://micolous.id.au/>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -40,25 +40,33 @@ class PDWServer(SMTPServer):
 		mime_message = message_from_string(data)
 		message = mime_message.get_payload()
 
-		flexcode, mtime, mdate, msg = message.split(' ', 3)
+		flexcode, mtime, mdate, bitrate, msg = message.split(' ', 4)
 
 		when = datetime.strptime(mdate + 'T' + mtime, '%d-%m-%yT%H:%M:%S')
 		flexcode = int(flexcode)
 		msg = msg.strip()
-
-		if flexcode not in CODES:
-			print 'flexcode %d is not known' % flexcode
-			print 'page:', flexcode, when, msg
-			return
-		else:
-			print 'page: %s (%s) %s %s' % (flexcode, CODES[flexcode], when, msg)
+		bitrate = str(bitrate)
+		if "1600" in bitrate:
+			self.fragmented = " "
+			self.fragmented = msg
+			if flexcode not in CODES:
+				return
+			else:
+				print 'page: %s (%s) %s %s' % (flexcode, CODES[flexcode], when, msg)
+		else: 
+			msg = self.fragmented + msg
+			if flexcode not in CODES:
+				return
+			else:
+				print 'page: %s (%s) %s %s' % (flexcode, CODES[flexcode], when, msg)
 
 			self.handler(
 				good_parse=True,
 				date=when,
 				unit=CODES[flexcode],
 				msg=msg
-			)
+				)
+			self.fragmented = ' '
 
 
 class CFSPDWScraper(object):
@@ -76,16 +84,17 @@ class CFSPDWScraper(object):
 	- Address
 	- Time
 	- Date
+	- Bitrate
 	- Message
 
 	Do not add any other fields into the email otherwise it will not parse.
 
-	This code does not presently handle multipart / fragmented pages.
+	This code does handle multipart / fragmented pages thanks to @Shaggs.
 	"""
 	def __init__(self, update_frequency=None):
 		# Update frequency is not relevant
 		self.feed_handler = None
-		self._smtp = PDWServer(('localhost', 8825), self.handler)
+		self._smtp = PDWServer(('localhost', 8826), self.handler)
 
 	def handler(self, **kwargs):
 		self.feed_handler(**kwargs)
