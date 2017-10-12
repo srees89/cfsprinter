@@ -38,7 +38,6 @@ class Display(BasePlugin):
 			msg = msg.replace(" P3 ", ", ALARM LEVEL: 1, ")
 		trigger = 'RESPOND'
 		trigger_end = 'MAP'
-
 		addr = msg.split(trigger)[1]
 		incno = msg.split(' ')[2]
 		date = msg.split(' ')[3]
