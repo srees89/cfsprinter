@@ -25,13 +25,15 @@ __all__ = ['get_scraper']
 # TODO: make this dynamic.
 from .sacfs import CFSPagerScraper, CFSPagerScraper2, CFSPagerScraper3, CFSPagerUrgmsgScraper
 from .sacfs_pdw import CFSPDWScraper
+from.sacfs_rtl import CFSRTLScraper
 
 SCRAPER_MAP = {
 	'sacfs': CFSPagerScraper,
 	'sacfs2': CFSPagerScraper2,
 	'sacfs3': CFSPagerScraper3,
 	'sacfs-urgmsg': CFSPagerUrgmsgScraper,
-	'sacfs-pdw': CFSPDWScraper
+	'sacfs-pdw': CFSPDWScraper,
+	'sacfs-rtl': CFSRTLScraper
 }
 
 
