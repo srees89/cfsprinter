@@ -44,28 +44,32 @@ class Display(BasePlugin):
 		time = msg.split(' ')[4]
 		inc = addr.split(',')[0]
 		alarm = addr.split(',')[1]
+		alarm = alarm.strip()
 		map = addr.split(',')[3]
 		map = re.sub(r'MAP:', '', map)
-		if 'P1' or 'P2' or 'P3' in msg:
-			tg = "null"
-		else:
-			tg = addr.split(',')[4]
+		tg = addr.split(',')[4]
+		x = msg.count(":")
+		v = msg.count ("==")
 		if "== ==" in addr:
-		 ex = addr.split("== ==")[1]
+			ex = addr.split("== ==")[1]
 		else:
-		 ex = addr.split("==")[1]
-		ex = ex.split(':')[0]
-		sunit = msg.split (':')[6]
-		ex = ex.replace('==' or "== ==", '')
-		if tg == 'null':
-			tg = ' '
-		else:
-			tg = re.sub(r'TG', '', tg)
-			tg = tg.strip("  ")
+			x = msg.count(":")
+			ex = addr.split("==")[1]
+			if v == 2:
+				ex = ex  + addr.split("==")[v]
+		  		sunit = msg.split (':')[x]
+				ex = ex.replace('==' or "== ==", '')
+		sunit = msg.split (':')[x -1]
+		ex = re.sub(sunit + ':', '', ex)
+		ex = map + " " + ex
+		tg = re.sub(r'TG', '', tg)
+		tg = tg.strip("  ")
+		inc = inc.strip()
 		addr = addr.split(trigger_end)[0]
 		addr = re.sub(r'#\d{3}/\d{3}|@|\s:\s', '', addr)
 		addr_p = addr.split(',')[-2:]
 		addr = ','.join(addr_p)
+		addr = addr.strip(',')
 		def orange():
 			text_widget.config(bg="Orange")
 			root.after(180000, red)
@@ -84,9 +88,9 @@ class Display(BasePlugin):
 		text_widget.tag_configure('tag-center', wrap='word', justify='center')
 		text_widget.insert(INSERT,''' Date: %(date)s
 
-Time: %(time)s 
+Time: %(time)s
 
-Incident Type: %(inc)s  
+Incident Type: %(inc)s
 
 Incident Number: %(incno)s
 
@@ -98,7 +102,7 @@ Info/Address: %(addr)s
 
 Map Ref: %(map)s
 
-Talk Group: %(tg)s 
+Talk Group: %(tg)s
 
 Resources: %(sunit)s
 
@@ -108,18 +112,3 @@ Raw:  %(msg)s '''
 		root.mainloop()
 
 PLUGIN = Display
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
