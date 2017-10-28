@@ -2,8 +2,6 @@
 from __future__ import absolute_import
 import asyncore
 from datetime import datetime 
-from smtpd import SMTPServer
-from email import message_from_string
 from .sacfs_flexcode import CODES
 import subprocess, sys
 from clint.textui import puts, colored
@@ -30,8 +28,6 @@ class CFSRTLScraper(object):
     pass
         # Update frequency is not relevant
  def process_message(self):
-	#print good_parse
-#	print str(self.handler())
 	time = datetime.now().strftime('%H:%M:%S')
 	when = datetime.now().strftime('%d/%m/%Y %H:%M')
 	comm = "rtl_fm -A lut -s 22050 -f 148.8125M - | multimon-ng -t raw -a FLEX -f alpha /dev/stdin"
