@@ -57,16 +57,15 @@ else:
 			addr_p = addr.split(',')[-2:]
 			addr = ','.join(addr_p)
 			
-			print "- incno: %s" % incno
-			print "- date: %s" % date
-			print "- time: %s" % time
-			print "- inc: %s" % inc
-			print "- alarm: %s" % alarm
-			print "- Address: %s" % addr
-			print "- map: %s" % map
-			print "- tg: %s" % tg
-			print "- ex: %s" % ex
-			print "- unit: %s" % sunit
+			print ("- incno: %s" % incno)
+			print ("- date: %s" % date)
+			print ("- time: %s" % time)
+			print ("- inc: %s" % inc)
+			print ("- alarm: %s" % alarm)
+			print ("- Address: %s" % addr)
+			print ("- map: %s" % map)
+			print ("- tg: %s" % tg)
+			print ("- unit: %s" % sunit)
 			filename = 'pager message.txt'
 			out = open (filename, 'w').write("""
 Date: %(date)s
